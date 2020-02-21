@@ -1,0 +1,72 @@
+specification: '0.4'
+
+unikraft:
+  version: '0.4'
+  kconfig:
+    # Enable 9pfs filesystem support
+    - CONFIG_LIBUK9P=y
+    - CONFIG_LIB9PFS=y
+    - CONFIG_LIBDEVFS=y
+    - CONFIG_LIBDEVFS_AUTOMOUNT=y
+    - CONFIG_LIBVFSCORE_AUTOMOUNT_ROOTFS=y
+    - CONFIG_LIBVFSCORE_ROOTFS_9PFS=y
+    - CONFIG_LIBVFSCORE_ROOTDEV="fs0"
+    - CONFIG_LIBUKLIBPARAM=y
+    # Enable other options needed by Ruby
+    - CONFIG_LIBUKDEBUG=y
+    - CONFIG_LIBUKALLOC=y
+    - CONFIG_LIBUKSCHED=y
+    - CONFIG_LIBVFSCORE=y
+    - CONFIG_LIBSYSCALL_SHIM=y
+    - CONFIG_LIBUKMMAP=y
+    - CONFIG_LIBPOSIX_LIBDL=y
+    - CONFIG_LIBPOSIX_SYSINFO=y
+    - CONFIG_LIBPOSIX_USER=y
+    - CONFIG_LIBUKTIME=y
+
+architectures:
+  x86_64: true
+
+platforms:
+  kvm: true
+
+run:
+  arguments: "helloworld.rb"
+  volumes:
+    fs0:
+      driver: 9pfs
+      source: ./minrootfs.tgz
+
+  networks:
+    net0:
+      pre_up: kraft-net --with-dnsmasq up
+      post_down: kraft-net --with-dnsmasq down
+
+libraries:
+  pthread-embedded: '0.4'
+  libunwind: '0.4'
+  compiler-rt: '0.4'
+  libcxx:
+    version: '0.4'
+    kconfig:
+      - CONFIG_LIBCXX=y
+      - CONFIG_CXX_THREADS=y
+  libcxxabi: '0.4'
+  newlib:
+    version: '0.4'
+    kconfig:
+      - CONFIG_LIBNEWLIBC=y
+  lwip:
+    version: '0.4'
+    kconfig:
+      - CONFIG_LIBLWIP=y
+      - CONFIG_LIBLWIP_SOCKET=y      
+      - CONFIG_LWIP_IPV6=y
+      - CONFIG_LWIP_IGMP=y
+  ruby:
+    version: '0.4'
+    kconfig:
+      - CONFIG_LIBRUBY=y
+      - CONFIG_LIBRUBY_MAIN_FUNCTION=y
+      # On some systems the psych extension causes build failures
+      - CONFIG_LIBRUBY_EXT_PSYCH=n
