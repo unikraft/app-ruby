@@ -1,7 +1,7 @@
 specification: '0.4'
 
 unikraft:
-  version: '0.4'
+  version: '0.5'
   kconfig:
     # Enable 9pfs filesystem support
     - CONFIG_LIBUK9P=y
@@ -43,28 +43,28 @@ run:
       post_down: kraft-net --with-dnsmasq down
 
 libraries:
-  pthread-embedded: '0.4'
-  libunwind: '0.4'
-  compiler-rt: '0.4'
+  pthread-embedded: '0.5'
+  libunwind: '0.5'
+  compiler-rt: '0.5'
   libcxx:
-    version: '0.4'
+    version: '0.5'
     kconfig:
       - CONFIG_LIBCXX=y
       - CONFIG_CXX_THREADS=y
-  libcxxabi: '0.4'
+  libcxxabi: '0.5'
   newlib:
-    version: '0.4'
+    version: '0.5'
     kconfig:
       - CONFIG_LIBNEWLIBC=y
   lwip:
-    version: '0.4'
+    version: '0.5'
     kconfig:
       - CONFIG_LIBLWIP=y
       - CONFIG_LIBLWIP_SOCKET=y      
       - CONFIG_LWIP_IPV6=y
       - CONFIG_LWIP_IGMP=y
   ruby:
-    version: '0.4'
+    version: '0.5'
     kconfig:
       - CONFIG_LIBRUBY=y
       - CONFIG_LIBRUBY_MAIN_FUNCTION=y
