@@ -1,9 +1,8 @@
-specification: '0.4'
-
+specification: '0.5'
+name: ruby
 unikraft:
   version: '0.5'
   kconfig:
-    # Enable 9pfs filesystem support
     - CONFIG_LIBUK9P=y
     - CONFIG_LIB9PFS=y
     - CONFIG_LIBDEVFS=y
@@ -12,7 +11,6 @@ unikraft:
     - CONFIG_LIBVFSCORE_ROOTFS_9PFS=y
     - CONFIG_LIBVFSCORE_ROOTDEV="fs0"
     - CONFIG_LIBUKLIBPARAM=y
-    # Enable other options needed by Ruby
     - CONFIG_LIBUKDEBUG=y
     - CONFIG_LIBUKALLOC=y
     - CONFIG_LIBUKSCHED=y
@@ -23,25 +21,9 @@ unikraft:
     - CONFIG_LIBPOSIX_SYSINFO=y
     - CONFIG_LIBPOSIX_USER=y
     - CONFIG_LIBUKTIME=y
-
-architectures:
-  x86_64: true
-
-platforms:
-  kvm: true
-
-run:
-  arguments: "helloworld.rb"
-  volumes:
-    fs0:
-      driver: 9pfs
-      source: ./minrootfs.tgz
-
-  networks:
-    net0:
-      pre_up: kraft-net --with-dnsmasq up
-      post_down: kraft-net --with-dnsmasq down
-
+targets:
+  - architecture: x86_64
+    platform: kvm
 libraries:
   pthread-embedded: '0.5'
   libunwind: '0.5'
@@ -60,7 +42,7 @@ libraries:
     version: '0.5'
     kconfig:
       - CONFIG_LIBLWIP=y
-      - CONFIG_LIBLWIP_SOCKET=y      
+      - CONFIG_LIBLWIP_SOCKET=y
       - CONFIG_LWIP_IPV6=y
       - CONFIG_LWIP_IGMP=y
   ruby:
@@ -68,5 +50,8 @@ libraries:
     kconfig:
       - CONFIG_LIBRUBY=y
       - CONFIG_LIBRUBY_MAIN_FUNCTION=y
-      # On some systems the psych extension causes build failures
       - CONFIG_LIBRUBY_EXT_PSYCH=n
+volumes:
+  fs0:
+    driver: 9pfs
+    source: ./minrootfs.tgz
