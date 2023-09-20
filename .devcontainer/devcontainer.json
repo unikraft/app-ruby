@@ -1,0 +1,11 @@
+{
+  "name": "Unikraft Ruby development environment",
+  "image": "kraftkit.sh/gcc:latest",
+  "remoteUser": "root",
+  "hostRequirements": {
+      "cpus": 4,
+      "memory": "8gb",
+      "storage": "32gb"
+  }
+}
+
